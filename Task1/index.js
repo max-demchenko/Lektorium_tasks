@@ -8,6 +8,7 @@ const createSubContainer = (children) => {
     let subContainer = document.createElement('div')
     subContainer.className = 'subContainer'
     children.forEach(element => subContainer.appendChild(element))
+
     mainContainer.appendChild(subContainer)
     mainContainer.append(subContainer)
 }
@@ -18,7 +19,10 @@ const createDice = (sideNumber) => {
         sideNumber = 6
     } else if (sideNumber < 1) {
         sideNumber = 1
+    } else if (isNaN(sideNumber)) {
+        sideNumber = 1
     }
+
 
     let columnsArray = [...createColumns(sideNumber)]
 
@@ -108,7 +112,6 @@ const renderResult = (finalArray) => {
         createSubContainer(finalArray[dice])
     }
 }
-
 
 let finalArray = generateCubes(numArray)
 

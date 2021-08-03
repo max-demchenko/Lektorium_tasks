@@ -3,8 +3,7 @@ let mainContainer = document.getElementById('mainContainer')
 let numArray = [[6], [2, 5, 3], [4], [1]]
 
 
-
-const createSubContainer = (children) => {
+const createLineContainer = (children) => {
     let subContainer = document.createElement('div')
     subContainer.className = 'subContainer'
     children.forEach(element => subContainer.appendChild(element))
@@ -13,34 +12,44 @@ const createSubContainer = (children) => {
     mainContainer.append(subContainer)
 }
 
-const createDice = (sideNumber) => {
+const createDice = (diceValue) => {
 
-    if (sideNumber > 6) {
-        sideNumber = 6
-    } else if (sideNumber < 1) {
-        sideNumber = 1
-    } else if (isNaN(sideNumber)) {
-        sideNumber = 1
-    }
+    let checkedDiceValue = checkValue(diceValue)
+
+    let columnsArray = [...createColumnsOfDots(checkedDiceValue)]
+
+    let amountOfDots
 
 
-    let columnsArray = [...createColumns(sideNumber)]
+    if (diceValue % 2 === 0) {
 
-    if (sideNumber % 2 === 0) {
+        amountOfDots = checkedDiceValue / 2
 
-        columnAppendDot(columnsArray[0], sideNumber / 2)
-        columnAppendDot(columnsArray[2], sideNumber / 2)
+        columnAppendDot(columnsArray[0], amountOfDots)
+        columnAppendDot(columnsArray[2], amountOfDots)
 
-    } else if (sideNumber % 2 !== 0) {
+    } else {
 
-        columnAppendDot(columnsArray[0], (sideNumber - 1) / 2)
+        amountOfDots = (checkedDiceValue - 1) / 2
+
+        columnAppendDot(columnsArray[0], amountOfDots)
         columnAppendDot(columnsArray[1], 1)
-        columnAppendDot(columnsArray[2], (sideNumber - 1) / 2)
+        columnAppendDot(columnsArray[2], amountOfDots)
 
     }
 
     let diceDiv = createDiceDiv(columnsArray)
     return diceDiv
+}
+
+
+const checkValue = (value) => {
+    if (value > 6) {
+        value = 6
+    } else if (value < 1 || isNaN(value) || typeof (value) !== 'number') {
+        value = 1
+    }
+    return value
 }
 
 
@@ -51,38 +60,35 @@ const createDiceDiv = (children) => {
     return parentDiv
 }
 
-const createColumns = (sideNumber) => {
-    let columnsArray
+const createColumnsOfDots = (diceValue) => {
 
-    switch (sideNumber) {
-
-
+    switch (diceValue) {
         case 4:
         case 5:
         case 6:
 
-            return columnsArray = [
-                createColumn('column space-between'),
-                createColumn('column center'),
-                createColumn('column space-between')
+            return [
+                createColumn('space-between'),
+                createColumn('center'),
+                createColumn('space-between')
             ]
 
         case 1:
         case 2:
         case 3:
 
-            return columnsArray = [
-                createColumn('column'),
-                createColumn('column center'),
-                createColumn('column reverse')
+            return [
+                createColumn(),
+                createColumn('center'),
+                createColumn('reverse')
             ]
     }
 }
 
 
-const createColumn = (columnType) => {
+const createColumn = (columnClass = "") => {
     let column = document.createElement('div')
-    column.className = columnType
+    column.className = `column ${columnClass}`
     return column
 }
 
@@ -96,23 +102,14 @@ const columnAppendDot = (parent, quantity) => {
 }
 
 const generateCubes = (numArray) => {
-    let finalArray = []
-    for (let indexArray in numArray) {
-        finalArray[indexArray] = []
-        for (let indexNum in numArray[indexArray]) {
-            finalArray[indexArray][indexNum] = createDice(numArray[indexArray][indexNum])
-        }
-    }
-    return finalArray
+    return numArray.map(element => element.map(element => createDice(element)))
 }
 
 
 const renderResult = (finalArray) => {
-    for (let dice in finalArray) {
-        createSubContainer(finalArray[dice])
-    }
+    finalArray.forEach(element => createLineContainer(element))
 }
 
-let finalArray = generateCubes(numArray)
+let cubesArray = generateCubes(numArray)
 
-renderResult(finalArray)
+renderResult(cubesArray)

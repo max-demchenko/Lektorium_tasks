@@ -22,12 +22,17 @@ const useStyles = makeStyles({
     link: {
         fontSize: 13,
         marginBottom: 3,
-        color: "rgb(45, 96, 190)"
+        color: "rgb(45, 96, 190)",
+        cursor: 'pointer'
+    },
+    input: {
+        cursor: 'pointer'
     },
     button: {
         width: "100%",
         height: 35,
-        background: "rgb(45, 96, 190)"
+        background: "rgb(45, 96, 190)",
+        cursor: 'pointer'
     },
     checkbox: {
         width: 10,
@@ -45,7 +50,6 @@ const useStyles = makeStyles({
     signUpInstead: {
         margin: 20
     }
-
 })
 
 

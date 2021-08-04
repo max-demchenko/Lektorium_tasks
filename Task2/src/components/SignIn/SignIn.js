@@ -14,6 +14,7 @@ const SignIn = () => {
     }
 
     const onSubmit = values => {
+        if(!formik.errors.password && formik.touched.password && !formik.errors.email && formik.touched.email)
         console.log(values)
     }
 

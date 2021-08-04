@@ -28,9 +28,6 @@ const SignIn = () => {
         validationSchema
     })
 
-    console.log('form values', formik.values)
-
-
     return (
         <>
 
